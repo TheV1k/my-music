@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //Filtro de pesquisa das músicas na api do iTunes
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record DadosMusica(@JsonAlias("trackName") String titulo,
-                          @JsonAlias("trackNumber") String numeroFaixa,
-                          @JsonAlias("primaryGenreName") String genero,
+                          @JsonAlias("trackNumber") Integer numeroFaixa,
                           @JsonAlias("collectionCensoredName") String album,
                           @JsonAlias("trackViewUrl") String linkMusica) {
 }

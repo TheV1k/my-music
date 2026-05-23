@@ -1,6 +1,7 @@
 package br.com.alura.exercicios.my_musics;
 
 import br.com.alura.exercicios.my_musics.Principal.Principal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MyMusicsApplication implements CommandLineRunner {
 
+	@Autowired
 	private final Principal principal;
 
 	public MyMusicsApplication(Principal principal) {
