@@ -8,10 +8,10 @@ import br.com.alura.exercicios.my_musics.Repository.AlbumRepository;
 import br.com.alura.exercicios.my_musics.Repository.ArtistaRepository;
 import br.com.alura.exercicios.my_musics.Repository.MusicaRepository;
 import br.com.alura.exercicios.my_musics.Service.*;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 
@@ -44,16 +44,20 @@ public class Principal {
     }
 
     public void exibeMenu(){
+        var opcao = -1;
+        while (opcao != 0){
         var menu = """
-                   1 - Buscar Artista
+                   1 - Cadastrar Artista
                    2 - Pesquisar sobre o artista
+                   3 - Buscar Artista por parte do nome
+                   4 - Pesquisar Música pelo titulo
+                   5 - Listar cinco Albums Mais caros
                    0- Sair
                    """;
         System.out.println(menu);
 
-        var opcao = sc.nextInt();
+        opcao = sc.nextInt();
         sc.nextLine();
-
         switch (opcao){
             case 1:
                 buscarArtistaWeb();
@@ -61,9 +65,21 @@ public class Principal {
             case 2:
                 pesquisarArtista();
                 break;
+            case 3:
+                buscaArtistaParteDoNome();
+                break;
+            case 4:
+                buscarMusicaPorTitulo();
+                break;
+            case 5:
+                listaCincoAlbumsMaiscaros();
+                break;
             case 0:
                 System.out.println("Saindo...");
                 break;
+            default:
+                System.out.println("Opção inválida");
+            }
         }
     }
 
@@ -104,7 +120,6 @@ public class Principal {
 
     }
 
-
     //Busca informações dos artistas no Chat GPT
     private void pesquisarArtista(){
 
@@ -112,6 +127,33 @@ public class Principal {
         var pesquisa = sc.nextLine();
         String resposta = consultaGemini.buscarInformacoes(pesquisa);
         System.out.println(resposta);
+
+    }
+
+    //Busca artista utilizando parte do nome
+    private void buscaArtistaParteDoNome(){
+
+        System.out.println("Digite o artista a ser pesquisado");
+        var nomeArtista = sc.nextLine();
+        var pesquisa = artistaService.buscaArtistaParteDoNome(nomeArtista);
+        System.out.println(pesquisa);
+
+    }
+
+    //Busca músicas pelo título
+    private void buscarMusicaPorTitulo(){
+        System.out.println("Digite o titulo da música: ");
+        var tituloMusica = sc.nextLine();
+        List<Musica> pesquisa = musicaService.buscarMusicaPorTitulo(tituloMusica);
+        pesquisa.stream().forEach(System.out::println);
+
+    }
+    private void listaCincoAlbumsMaiscaros(){
+
+        List<Album> albumsMaisCaros = albumService.cincoMaisCaros()
+                .stream()
+                .toList();
+        albumsMaisCaros.forEach(System.out::println);
 
     }
 }

@@ -52,4 +52,13 @@ public class ArtistaService extends BaseService{
 
         return repository.save(artista);
     }
+
+    //Pesquisa os artistas salvos no banco utilizando parte do nome
+    public Artista buscaArtistaParteDoNome(String nomeArtista){
+
+       return repository.findByNomeContainsIgnoreCase(nomeArtista)
+               .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
+
+
+    }
 }

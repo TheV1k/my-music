@@ -75,4 +75,16 @@ public class MusicaService extends BaseService {
 
         return repository.saveAll(musica);
     }
+
+    public List<Musica> buscarMusicaPorTitulo(String tituloMusica) {
+            List<Musica> musicas = repository.findByTituloEqualsIgnoreCase(tituloMusica)
+                    .stream()
+                    .toList();
+
+            if (musicas.isEmpty()){
+                throw new RuntimeException("Nenhuma música encontrada!");
+            }
+            return musicas;
+
+    }
 }

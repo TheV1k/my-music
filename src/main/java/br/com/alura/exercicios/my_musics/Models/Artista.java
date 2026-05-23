@@ -43,11 +43,10 @@ public class Artista {
     }
 
     public String toString() {
-        return "Artista{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", genero=" + genero +
-                ", albuns=" + albuns +
-                '}';
+        return
+                "id: " + id +
+                " | nome: " + nome + '\'' +
+                " | genero: " + genero
+                ;
     }
 }

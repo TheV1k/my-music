@@ -37,10 +37,11 @@ public enum Genero {
             "Country", COUNTRY,
             "MPB", MPB,
             "Eletrônico", ELETRONICO,
-            "Gospel", GOSPEL,
+            "Christian", GOSPEL,
             "Rap", RAP,
             "Trap", TRAP,
             "Folk", FOLK
+
 
     );
     public static Genero fromString(String genero){

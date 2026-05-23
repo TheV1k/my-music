@@ -1,5 +1,9 @@
 package br.com.alura.exercicios.my_musics.Service;
 
+import br.com.alura.exercicios.my_musics.Models.Album;
+
+import java.util.List;
+
 public abstract class BaseService {
 
     protected final ConsumoAPI consumo;
@@ -14,4 +18,6 @@ public abstract class BaseService {
         this.consumo = consumo;
         this.conversor = conversor;
     }
+
+
 }

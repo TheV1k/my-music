@@ -89,4 +89,9 @@ public class AlbumService extends BaseService {
 
         return repository.saveAll(albums);
     }
+
+    public List<Album> cincoMaisCaros() {
+
+        return repository.cincoAlbumsMaisCaros();
+    }
 }
