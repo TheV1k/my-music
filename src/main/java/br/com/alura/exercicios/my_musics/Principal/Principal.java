@@ -33,13 +33,14 @@ public class Principal {
     private ConsultaGemini consultaGemini;
 
 
-    public Principal(ArtistaRepository repositorioArtista, AlbumRepository repositorioAlbum, MusicaRepository repositorioMusica, ArtistaService artistaService, AlbumService albumService, MusicaService musicaService) {
+    public Principal(ArtistaRepository repositorioArtista, AlbumRepository repositorioAlbum, MusicaRepository repositorioMusica, ArtistaService artistaService, AlbumService albumService, MusicaService musicaService, ConsultaGemini consultaGemini) {
         this.repositorioArtista = repositorioArtista;
         this.repositorioAlbum = repositorioAlbum;
         this.repositorioMusica = repositorioMusica;
         this.artistaService = artistaService;
         this.albumService = albumService;
         this.musicaService = musicaService;
+        this.consultaGemini = consultaGemini;
     }
 
     public void exibeMenu(){
@@ -111,7 +112,6 @@ public class Principal {
         var pesquisa = sc.nextLine();
         String resposta = consultaGemini.buscarInformacoes(pesquisa);
         System.out.println(resposta);
-
 
     }
 }

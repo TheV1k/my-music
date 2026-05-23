@@ -4,8 +4,6 @@ import br.com.alura.exercicios.my_musics.DTO.ArtistaDTO;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosArtista;
 import br.com.alura.exercicios.my_musics.Models.DadosBusca;
-import br.com.alura.exercicios.my_musics.Refl.Transformator;
-import br.com.alura.exercicios.my_musics.Repository.AlbumRepository;
 import br.com.alura.exercicios.my_musics.Repository.ArtistaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,7 @@ public class ArtistaService extends BaseService{
 
         super(consumo, conversor);
     }
-    private Transformator transformator = new Transformator();
+
     @Autowired
     private ArtistaRepository repository;
 
@@ -46,15 +44,7 @@ public class ArtistaService extends BaseService{
                 .orElseThrow(()-> new RuntimeException("Artista não encontrado"));
     }
 
-    public ArtistaDTO converterParaDTO(Artista artista){
-        try {
-            return transformator.transform(artista);
-        } catch (Exception e){
 
-            throw new RuntimeException("Erro ao converter para DTO!", e);
-        }
-
-    }
 
     public Artista salvar(ArtistaDTO dto) {
 
