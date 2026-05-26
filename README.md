@@ -9,7 +9,10 @@ O objetivo do projeto é praticar consumo de APIs REST, tratamento de dados e ev
 Busca de artistas via API do iTunes
 Listagem de álbuns do artista
 Listagem de músicas associadas
-Exibição de dados estruturados no console
+
+Persistência de dados no banco PostgreSQL
+
+Consultas estruturadas utilizando Derived Queries, consulta nativa e JPQL
 
 ## 🛠️ Tecnologias utilizadas
 
@@ -30,13 +33,13 @@ Evolução de aplicação backend realista
 
 📌 Próximos passos
 
-Persistência de dados em banco PostgreSQL
-Criação de entidades JPA (Artista, Álbum, Música)
-Implementação de repositórios com Spring Data JPA
 Cache de buscas para otimização
 API REST completa para consumo externo
 
+Criação de interface gráfica
+
 ## ▶️ Como executar
+
  Clone o repositório:
 
 `git clone https://github.com/seu-usuario/my-music.git`
@@ -45,6 +48,7 @@ Acesse a pasta:
 
 `cd my-music
 `
+
 ## Execute com Maven
 
 `./mvnw spring-boot:run
