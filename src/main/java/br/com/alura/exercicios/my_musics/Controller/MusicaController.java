@@ -2,14 +2,12 @@ package br.com.alura.exercicios.my_musics.Controller;
 
 
 import br.com.alura.exercicios.my_musics.DTO.MusicaDTO;
+import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Musica;
 import br.com.alura.exercicios.my_musics.Service.MusicaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,9 +20,13 @@ public class MusicaController {
 
     @PostMapping
     public ResponseEntity<List<Musica>> salvar(
-            @RequestBody List<MusicaDTO> dtos){
+            @RequestBody List<MusicaDTO> dtos, @RequestParam Album album){
 
-        List<Musica> musicas = service.salvar(dtos);
+        List<Musica> musicas = dtos.stream()
+                .map(dto -> new Musica(dto,album))
+                .toList();
+
+        List<Musica> musicasSalvas = service.salvar(musicas);
 
         return ResponseEntity.ok(musicas);
     }

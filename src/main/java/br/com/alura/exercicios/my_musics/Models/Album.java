@@ -11,7 +11,8 @@ import java.util.List;
 public class Album {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long Id;
+   private Long id;
+   private Long idItunes;
    private String nome;
    private String capa;
    private Double preco;
@@ -20,17 +21,21 @@ public class Album {
    public Album(){}
 
 
-   @ManyToOne
+   @ManyToOne(optional = false)
+   @JoinColumn(name = "artista_id", nullable = false)
    private Artista artista;
 
 
    @OneToMany (mappedBy = "album", cascade =CascadeType.ALL, fetch = FetchType.LAZY)
    private List<Musica> musicas = new ArrayList<>();
 
-   public Album(DadosAlbum dados) {
+   public Album(DadosAlbum dados, Artista artista) {
+
+      this.idItunes = dados.idAlbum();
       this.nome = dados.nome();
       this.capa = dados.capa();
       this.preco = dados.preco();
+      this.artista = artista;
 
       if (dados.anoLancamento() != null) {
          this.anoLancamento =
@@ -38,16 +43,21 @@ public class Album {
       }
    }
 
-   public Album(AlbumDTO dto) {
+   public Album(AlbumDTO dto, Artista artista) {
       this.nome = dto.getNome();
       this.capa = dto.getCapa();
       this.preco = dto.getPreco();
       if (dto.getAnoLancamento() != null) {
          this.anoLancamento =
                  dto.getAnoLancamento().substring(0, 4);
+         this.artista = artista;
+         this.idItunes = dto.getIdITunes();
       }
 
    }
+
+
+
 
    public String getNome() {
       return nome;
@@ -88,6 +98,10 @@ public class Album {
 
    public void setAnoLancamento(String anoLancamento) {
       this.anoLancamento = anoLancamento;
+   }
+
+   public Long getIdItunes() {
+      return idItunes;
    }
 
    @Override

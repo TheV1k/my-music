@@ -45,16 +45,20 @@ public class MusicaService extends BaseService {
         return dadosMusica.results();
     }
 
-    public List<Musica> processarMusicas(Long idAlbum){
+
+    //Processa a lista de músicas vindas da API
+    public List<Musica> processarMusicas(Long idAlbum,Album album){
 
         List<DadosMusica> dadosMusicas =
                 buscarMusicas(idAlbum);
 
         return dadosMusicas.stream()
                 .filter(m -> m.titulo() != null)
-                .map(Musica::new)
+                .map(dto -> new Musica(dto,album))
                 .toList();
     }
+
+    //Converte dados para DTO
 
     public List<MusicaDTO> converterParaDTO(List<Musica> musicas){
 
@@ -67,15 +71,13 @@ public class MusicaService extends BaseService {
                 .toList();
     }
 
-    public List<Musica> salvar(List<MusicaDTO> dtos) {
+    //Salvar músicas
+    public List<Musica> salvar(List<Musica> musicas) {
 
-        List<Musica> musica = dtos.stream()
-                .map(Musica::new)
-                .toList();
-
-        return repository.saveAll(musica);
+        return repository.saveAll(musicas);
     }
 
+    //Busca músicas por titulo
     public List<Musica> buscarMusicaPorTitulo(String tituloMusica) {
             List<Musica> musicas = repository.findByTituloEqualsIgnoreCase(tituloMusica)
                     .stream()
@@ -85,6 +87,24 @@ public class MusicaService extends BaseService {
                 throw new RuntimeException("Nenhuma música encontrada!");
             }
             return musicas;
+
+    }
+
+    //Lista as músicas de um album
+    public List<Musica> musicasPorAlbum(String album){
+
+        List<Musica> musicaPorAlbum = repository.findByAlbumNomeEqualsIgnoreCase(album);
+
+        return  musicaPorAlbum;
+
+    }
+
+    //Lista as músicas de um album buscando apenas parte do título
+    public List<Musica> musicasPorAlbumParteTitulo(String album){
+
+        List<Musica> musicaPorAlbum = repository.findByAlbumNomeContainingIgnoreCase(album);
+
+        return  musicaPorAlbum;
 
     }
 }

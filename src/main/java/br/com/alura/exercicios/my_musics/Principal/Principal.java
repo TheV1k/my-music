@@ -52,6 +52,9 @@ public class Principal {
                    3 - Buscar Artista por parte do nome
                    4 - Pesquisar Música pelo titulo
                    5 - Listar cinco Albums Mais caros
+                   6 - Lista as músicas de um album (Busca pelo título)
+                   7 - Buscar Músicas de um album usando parte do nome
+                   8 - Buscar albums de um artista
                    0- Sair
                    """;
         System.out.println(menu);
@@ -74,8 +77,17 @@ public class Principal {
             case 5:
                 listaCincoAlbumsMaiscaros();
                 break;
+            case 6:
+                listarMusicasDeUmAlbum();
+                break;
             case 0:
                 System.out.println("Saindo...");
+                break;
+            case 7:
+                listarMusicasParteNomeAlbum();
+
+            case 8:
+                ListarAlbumsDeUmArtista();
                 break;
             default:
                 System.out.println("Opção inválida");
@@ -91,17 +103,21 @@ public class Principal {
         repositorioArtista.save(artista);
         //Busca os albums do artista pesquisado na api do iTunes e processa os dados
         List<DadosAlbum> dadosAlbums = buscarAlbums(dados.idArtista());
-        List<Album> albums = albumService.processarAlbums(dadosAlbums);
+        List<Album> albums = albumService.processarAlbums(dadosAlbums, artista);
         //Converte a lista de albums do artista para DTO e salva no banco de dados
         List<AlbumDTO> albunsDTO = albumService.converterParaDTO(albums);
-        albumService.salvar(albunsDTO);
+
+        List<Album> albumsSalvos =
+                albumService.salvar(
+                        albumService.converterParaDTO(albums),
+                        artista
+                );
         //Busca as músicas do artista pesquisado na api do iTunes
-        dadosAlbums.forEach(album -> {
-            List<DadosMusica> dadosMusicas =  musicaService.buscarMusicas(album.idAlbum());
-            List<Musica> musicas =  musicaService.processarMusicas(album.idAlbum());
+        albumsSalvos.forEach(album -> {
+            List<Musica> musicas =  musicaService.processarMusicas(album.getIdItunes(), album);
           //Converte os dados das músicas para DTO
             List<MusicaDTO> musicaDTO = musicaService.converterParaDTO(musicas);
-            musicaService.salvar(musicaDTO);
+            musicaService.salvar(musicas);
         });
 
         System.out.println("Artista: " + dados.nome() + " | " + "Gênero: " + dados.genero() + " salvos no My Music");
@@ -148,12 +164,49 @@ public class Principal {
         pesquisa.stream().forEach(System.out::println);
 
     }
+
+    //Lista os cinco albums mais caros
     private void listaCincoAlbumsMaiscaros(){
 
         List<Album> albumsMaisCaros = albumService.cincoMaisCaros()
                 .stream()
                 .toList();
         albumsMaisCaros.forEach(System.out::println);
+
+    }
+
+    //Lista as músicas de um album
+    private void listarMusicasDeUmAlbum(){
+
+        System.out.println("Digite o album desejado: ");
+        var album = sc.nextLine();
+        List<Musica> albumPesquisado = musicaService.musicasPorAlbum(album)
+                .stream()
+                .toList();
+
+        albumPesquisado.forEach(musica -> System.out.println("Album: " + musica.getAlbum().getNome() +
+                " | Faixa:  " + musica.getFaixa() +  "|Titulo: " + musica.getTitulo() + " | Link: " + musica.getLinkMusica()));
+    }
+
+    private void listarMusicasParteNomeAlbum(){
+
+
+        System.out.println("Digite o album desejado: ");
+        var album = sc.nextLine();
+        List<Musica> albumPesquisado = musicaService.musicasPorAlbumParteTitulo(album).stream().toList();
+
+        albumPesquisado.forEach(musica -> System.out.println("Album: " + musica.getAlbum().getNome() +
+                " | Faixa:  " + musica.getFaixa() +  "|Titulo: " + musica.getTitulo() + " | Link: " + musica.getLinkMusica()));
+
+
+    }
+
+    private void ListarAlbumsDeUmArtista(){
+
+        System.out.println("Digite o artista desejado: ");
+        var pesquisa = sc.nextLine();
+        List<Album> albums = artistaService.listarAlbumsDoArtista(pesquisa);
+        albums.forEach(album -> System.out.println("Artista: " + album.getArtista()+ " | Album: " + album.getNome() + "Ano: " + album.getAnoLancamento() + "Capa: " +album.getCapa()));
 
     }
 }

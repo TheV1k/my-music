@@ -2,6 +2,7 @@ package br.com.alura.exercicios.my_musics.Controller;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
+import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Service.AlbumService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,9 @@ public class AlbumController {
 
     @PostMapping
     public ResponseEntity<List<Album>> salvar(
-            @RequestBody List<AlbumDTO> dtos){
+            @RequestBody List<AlbumDTO> dtos, Artista artista){
 
-        List<Album> albums = service.salvar(dtos);
+        List<Album> albums = service.salvar(dtos, artista );
 
         return ResponseEntity.ok(albums);    }
 }

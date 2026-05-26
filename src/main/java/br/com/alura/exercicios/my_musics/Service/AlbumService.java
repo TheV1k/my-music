@@ -2,6 +2,7 @@ package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
+import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosAlbum;
 import br.com.alura.exercicios.my_musics.Models.DadosBusca;
 import br.com.alura.exercicios.my_musics.Repository.AlbumRepository;
@@ -41,13 +42,13 @@ public class AlbumService extends BaseService {
 
     }
 
-    public List<Album> processarAlbums(List<DadosAlbum> dadosAlbuns){
+    public List<Album> processarAlbums(List<DadosAlbum> dadosAlbuns, Artista artista){
 
         List<Album> albums = dadosAlbuns.stream()
                 .filter(a -> a != null)
                 .filter(a -> a.anoLancamento() != null)
                 .distinct()
-                .map(Album::new)
+                .map(dados -> new Album(dados, artista))
                 .toList();
 
         dadosAlbuns.stream()
@@ -74,17 +75,18 @@ public class AlbumService extends BaseService {
                         album.getNome(),
                         album.getCapa(),
                         album.getPreco(),
-                        album.getAnoLancamento()
+                        album.getAnoLancamento(),
+                        album.getIdItunes()
                 ))
                 .toList();
     }
     @Autowired
     private AlbumRepository repository;
 
-    public List<Album> salvar(List<AlbumDTO> dtos) {
+    public List<Album> salvar(List<AlbumDTO> dtos, Artista artista) {
 
         List<Album> albums = dtos.stream()
-                .map(Album::new)
+                .map(dto -> new Album(dto, artista))
                 .toList();
 
         return repository.saveAll(albums);

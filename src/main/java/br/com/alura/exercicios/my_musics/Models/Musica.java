@@ -17,19 +17,22 @@ public class Musica {
 
 
 
-   public Musica(MusicaDTO dto) {
+   public Musica(MusicaDTO dto, Album album) {
       this.titulo = dto.getTitulo();
       this.faixa = dto.getFaixa();
       this.linkMusica = dto.getLinkMusica();
+      this.album = album;
    }
 
-   @ManyToOne
+   @ManyToOne(optional = false)
+   @JoinColumn(name = "album_id", nullable = false)
    private Album album;
 
-   public Musica(DadosMusica dadosMusica) {
+   public Musica(DadosMusica dadosMusica, Album album) {
       this.titulo = dadosMusica.titulo();
       this.faixa = dadosMusica.numeroFaixa();
       this.linkMusica = dadosMusica.linkMusica();
+      this.album = album;
    }
 
 

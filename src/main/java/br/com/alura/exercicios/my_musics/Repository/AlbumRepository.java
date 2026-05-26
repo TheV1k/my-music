@@ -9,6 +9,9 @@ import java.util.List;
 public interface AlbumRepository extends JpaRepository<Album, Long> {
 
 
-    @Query(value = "select * from album ORDER BY preco DESC LIMIT 5", nativeQuery = true)
+    @Query(value = "select * from album " +
+            "ORDER BY preco " +
+            "DESC LIMIT 5",
+            nativeQuery = true)
     List<Album> cincoAlbumsMaisCaros();
 }

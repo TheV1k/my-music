@@ -10,4 +10,8 @@ public interface MusicaRepository extends JpaRepository<Musica, Long> {
     //Buscar música pelo nome
 
     List<Musica> findByTituloEqualsIgnoreCase(String tituloMusica);
+
+    List<Musica> findByAlbumNomeContainingIgnoreCase(String album);
+
+    List<Musica> findByAlbumNomeEqualsIgnoreCase(String album);
 }

@@ -1,6 +1,7 @@
 package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.ArtistaDTO;
+import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosArtista;
 import br.com.alura.exercicios.my_musics.Models.DadosBusca;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 @Service
 public class ArtistaService extends BaseService{
@@ -59,6 +61,12 @@ public class ArtistaService extends BaseService{
        return repository.findByNomeContainsIgnoreCase(nomeArtista)
                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
 
+
+    }
+    public List<Album> listarAlbumsDoArtista(String pesquisa){
+
+        List<Album> albumsDoArtista = repository.listaAlbunsPorArtista(pesquisa);
+        return albumsDoArtista;
 
     }
 }
