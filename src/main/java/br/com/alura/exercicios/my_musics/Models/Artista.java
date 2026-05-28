@@ -15,7 +15,7 @@ public class Artista {
     private String nome;
     @Enumerated(EnumType.STRING)
     private Genero genero;
-    @OneToMany(mappedBy = "artista", cascade =CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "artista", cascade =CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Album> albuns = new ArrayList<>();
 
     public Artista(){}
