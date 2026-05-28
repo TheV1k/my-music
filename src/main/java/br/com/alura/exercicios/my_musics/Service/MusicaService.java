@@ -2,6 +2,8 @@ package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.MusicaDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO;
 import br.com.alura.exercicios.my_musics.Models.*;
 import br.com.alura.exercicios.my_musics.Repository.MusicaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -55,14 +57,14 @@ public class MusicaService extends BaseService {
 
 
     //Processa a lista de músicas vindas da API
-    public List<Musica> processarMusicas(Long idAlbum,Album album){
+    public List<Musica> processarMusicas(Long idAlbum,Album album, Artista artista){
 
         List<DadosMusica> dadosMusicas =
                 buscarMusicas(idAlbum);
 
         return dadosMusicas.stream()
                 .filter(m -> m.titulo() != null)
-                .map(dto -> new Musica(dto,album))
+                .map(dto -> new Musica(dto,album,artista))
                 .toList();
     }
 
@@ -80,9 +82,26 @@ public class MusicaService extends BaseService {
     }
 
     //Salvar músicas
-    public List<Musica> salvar(List<Musica> musicas) {
+    public List<ResumoMusicaDTO> salvar(List<MusicaDTO> dtos, Album album, Artista artista) {
 
-        return repository.saveAll(musicas);
+        List<Musica> musicasSalvas = dtos.stream()
+                .map(dto -> new Musica(
+                        dto,
+                        album,
+                        artista))
+                .toList();
+
+        repository.saveAll(musicasSalvas);
+
+        return musicasSalvas.stream()
+                .map(musica -> new ResumoMusicaDTO(
+                        musica.getFaixa(),
+                        musica.getTitulo(),
+                        musica.getAlbum().getNome(),
+                        musica.getAlbum().getArtista(),
+                        musica.getLinkMusica()
+                ))
+                .toList();
     }
 
     //Busca músicas por titulo

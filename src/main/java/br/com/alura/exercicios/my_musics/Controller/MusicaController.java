@@ -2,7 +2,9 @@ package br.com.alura.exercicios.my_musics.Controller;
 
 
 import br.com.alura.exercicios.my_musics.DTO.MusicaDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
+import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.Musica;
 import br.com.alura.exercicios.my_musics.Service.MusicaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +26,15 @@ public class MusicaController {
    private MusicaService service;
 
     @PostMapping
-    public ResponseEntity<List<Musica>> salvar(
-            @RequestBody List<MusicaDTO> dtos, @RequestParam Album album){
+    public ResponseEntity<List<ResumoMusicaDTO>> salvar(
+            @RequestBody List<MusicaDTO> dtos,
+            @RequestParam Album album,
+            @RequestParam Artista artista){
 
-        List<Musica> musicas = dtos.stream()
-                .map(dto -> new Musica(dto,album))
-                .toList();
 
-        List<Musica> musicasSalvas = service.salvar(musicas);
+        List<ResumoMusicaDTO> musicasSalvas = service.salvar(dtos, album, artista);
 
-        return ResponseEntity.ok(musicas);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(musicasSalvas);
     }
 
     @GetMapping("/musicas")

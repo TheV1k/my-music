@@ -1,6 +1,7 @@
 package br.com.alura.exercicios.my_musics.Controller;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Service.AlbumService;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +24,19 @@ public class AlbumController {
     private AlbumService service;
 
     @PostMapping
-    public ResponseEntity<List<Album>> salvar(
+    public ResponseEntity <List<ResumoAlbumDTO>> salvar(
             @RequestBody List<AlbumDTO> dtos, Artista artista){
 
-        List<Album> albums = service.salvar(dtos, artista );
+        List<ResumoAlbumDTO> albums = service.salvar(dtos, artista );
 
-        return ResponseEntity.ok(albums);    }
+        return ResponseEntity.status(HttpStatus.CREATED).body(albums);
 
+    }
+
+    @GetMapping
+    public List<ResumoAlbumDTO> listar(){
+        return service.listarResumo();
+    }
 
     @GetMapping("/album")
     public Page<Album> listar(@RequestParam(defaultValue = "0") int pagina,

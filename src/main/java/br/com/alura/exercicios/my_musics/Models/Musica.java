@@ -13,26 +13,32 @@ public class Musica {
    private int faixa;
    private String linkMusica;
 
+   @ManyToOne
+   @JoinColumn(name = "artista_id")
+   private Artista artista;
+
    public Musica(){}
 
 
 
-   public Musica(MusicaDTO dto, Album album) {
+   public Musica(MusicaDTO dto, Album album, Artista artista) {
       this.titulo = dto.getTitulo();
       this.faixa = dto.getFaixa();
       this.linkMusica = dto.getLinkMusica();
       this.album = album;
+      this.artista = artista;
    }
 
    @ManyToOne(optional = false)
    @JoinColumn(name = "album_id", nullable = false)
    private Album album;
 
-   public Musica(DadosMusica dadosMusica, Album album) {
+   public Musica(DadosMusica dadosMusica, Album album, Artista artista) {
       this.titulo = dadosMusica.titulo();
       this.faixa = dadosMusica.numeroFaixa();
       this.linkMusica = dadosMusica.linkMusica();
       this.album = album;
+      this.artista = artista;
    }
 
 

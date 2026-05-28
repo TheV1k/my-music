@@ -1,6 +1,7 @@
 package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosAlbum;
@@ -91,17 +92,32 @@ public class AlbumService extends BaseService {
     @Autowired
     private AlbumRepository repository;
 
-    public List<Album> salvar(List<AlbumDTO> dtos, Artista artista) {
+    public List<ResumoAlbumDTO> salvar(List<AlbumDTO> dtos, Artista artista) {
 
         List<Album> albums = dtos.stream()
                 .map(dto -> new Album(dto, artista))
                 .toList();
 
-        return repository.saveAll(albums);
+        repository.saveAll(albums);
+
+        return albums.stream()
+                        .map(a -> new ResumoAlbumDTO(
+                                a.getNome(),
+                                a.getArtista(),
+                                a.getPreco(),
+                                a.getAnoLancamento(),
+                                a.getCapa()))
+                .toList();
     }
 
     public List<Album> cincoMaisCaros() {
 
         return repository.cincoAlbumsMaisCaros();
+    }
+
+    public List<ResumoAlbumDTO> listarResumo() {
+
+
+        return repository.listarResumoAlbum();
     }
 }

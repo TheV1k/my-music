@@ -42,6 +42,10 @@ public class Artista {
         this.nome = nome;
     }
 
+    public Genero getGenero() {
+        return genero;
+    }
+
     public String toString() {
         return
                 "id: " + id +

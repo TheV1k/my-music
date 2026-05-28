@@ -1,5 +1,6 @@
 package br.com.alura.exercicios.my_musics.Repository;
 
+import br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,10 @@ import java.util.Optional;
 
 public interface ArtistaRepository extends JpaRepository <Artista, Long> {
 
+    @Query("SELECT new br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO" +
+            "(a.nome,a.genero)" +
+            "FROM Artista a")
+        List<ResumoArtistaDTO> listarResumoArtista();
 
     Page<Artista> findAll(Pageable pageable);
 

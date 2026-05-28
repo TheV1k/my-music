@@ -1,6 +1,7 @@
 package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.ArtistaDTO;
+import br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO;
 import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosArtista;
@@ -17,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
-public class ArtistaService extends BaseService{
+public class ArtistaService extends BaseService {
 
 
     public ArtistaService(ConsumoAPI consumo,
@@ -29,40 +30,51 @@ public class ArtistaService extends BaseService{
     @Autowired
     private ArtistaRepository repository;
 
+
+    public List<ResumoArtistaDTO> listarResumo() {
+
+        return repository.listarResumoArtista();
+    }
+
     //Paginação
-    public Page<Artista> listarArtistasPaginados(int pagina, int tamanho){
-        PageRequest pageable = PageRequest.of(pagina,tamanho);
+    public Page<Artista> listarArtistasPaginados(int pagina, int tamanho) {
+        PageRequest pageable = PageRequest.of(pagina, tamanho);
 
         return repository.findAll(pageable);
     }
 
 
     //Faz a requisição para buscar as informações do artista (Nome e gênero na API do iTunes)
-    public DadosArtista getDadosArtista(String nomeArtista){
+    public DadosArtista getDadosArtista(String nomeArtista) {
         var artista = URLEncoder.encode(nomeArtista, StandardCharsets.UTF_8);
         var json = consumo.obterDados(ENDERECO + "search?term=" +
                 artista
                 + "&entity=musicArtist");
         DadosBusca<DadosArtista> dadosArtista =
                 conversor.obterDados(json, new TypeReference<DadosBusca<DadosArtista>>() {
-        });
+                });
 
-         return dadosArtista
+        return dadosArtista
                 .results()
                 .stream()
                 .filter(a -> a.nome().equalsIgnoreCase(nomeArtista))
                 .findFirst()
-                .orElseThrow(()-> new RuntimeException("Artista não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
     }
 
 
-
-    public Artista salvar(ArtistaDTO dto) {
+    //Salva os dados do Artista utilizando DTO para filtrar as informações
+    public ResumoArtistaDTO salvar(ArtistaDTO dto) {
 
         Artista artista = new Artista(dto);
+        repository.save(artista);
 
-        return repository.save(artista);
+        return new ResumoArtistaDTO(
+                artista.getNome(),
+                artista.getGenero()
+        );
     }
+
 
     //Pesquisa os artistas salvos no banco utilizando parte do nome
     public Artista buscaArtistaParteDoNome(String nomeArtista){
@@ -78,4 +90,6 @@ public class ArtistaService extends BaseService{
         return albumsDoArtista;
 
     }
+
+
 }
