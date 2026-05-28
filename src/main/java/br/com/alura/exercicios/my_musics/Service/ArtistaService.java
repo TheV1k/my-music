@@ -8,6 +8,8 @@ import br.com.alura.exercicios.my_musics.Models.DadosBusca;
 import br.com.alura.exercicios.my_musics.Repository.ArtistaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -26,6 +28,13 @@ public class ArtistaService extends BaseService{
 
     @Autowired
     private ArtistaRepository repository;
+
+    //Paginação
+    public Page<Artista> listarArtistasPaginados(int pagina, int tamanho){
+        PageRequest pageable = PageRequest.of(pagina,tamanho);
+
+        return repository.findAll(pageable);
+    }
 
 
     //Faz a requisição para buscar as informações do artista (Nome e gênero na API do iTunes)

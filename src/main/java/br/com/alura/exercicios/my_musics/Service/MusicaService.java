@@ -2,12 +2,11 @@ package br.com.alura.exercicios.my_musics.Service;
 
 import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.MusicaDTO;
-import br.com.alura.exercicios.my_musics.Models.Album;
-import br.com.alura.exercicios.my_musics.Models.DadosBusca;
-import br.com.alura.exercicios.my_musics.Models.DadosMusica;
-import br.com.alura.exercicios.my_musics.Models.Musica;
+import br.com.alura.exercicios.my_musics.Models.*;
 import br.com.alura.exercicios.my_musics.Repository.MusicaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +15,15 @@ import java.util.List;
 public class MusicaService extends BaseService {
 
     private final MusicaRepository repository;
+
+
+    //Paginação
+    public Page<Musica> listarMusicasPaginados(int pagina, int tamanho){
+        PageRequest pageable = PageRequest.of(pagina,tamanho);
+
+        return repository.findAll(pageable);
+    }
+
 
     public MusicaService(ConsumoAPI consumo,
                          ConverteDados conversor,

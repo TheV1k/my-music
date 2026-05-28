@@ -8,6 +8,8 @@ import br.com.alura.exercicios.my_musics.Models.DadosBusca;
 import br.com.alura.exercicios.my_musics.Repository.AlbumRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,12 @@ public class AlbumService extends BaseService {
         super(consumo, conversor);
     }
 
+    //Paginação
+    public Page<Album> listarAlbumsPaginados(int pagina, int tamanho) {
+        PageRequest pageable = PageRequest.of(pagina, tamanho);
+
+        return repository.findAll(pageable);
+    }
 
     //Faz a requisição e retorna lista de álbuns do artista pesquisado
     public List<DadosAlbum> buscarAlbums(Long idArtista){
