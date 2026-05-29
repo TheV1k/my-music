@@ -82,27 +82,22 @@ public class MusicaService extends BaseService {
     }
 
     //Salvar músicas
-    public List<ResumoMusicaDTO> salvar(List<MusicaDTO> dtos, Album album, Artista artista) {
+    public List<ResumoMusicaDTO> salvar(List<Musica> musicas) {
 
-        List<Musica> musicasSalvas = dtos.stream()
-                .map(dto -> new Musica(
-                        dto,
-                        album,
-                        artista))
-                .toList();
-
-        repository.saveAll(musicasSalvas);
+        List<Musica> musicasSalvas = repository.saveAll(musicas);
 
         return musicasSalvas.stream()
                 .map(musica -> new ResumoMusicaDTO(
                         musica.getFaixa(),
                         musica.getTitulo(),
-                        musica.getAlbum().getNome(),
-                        musica.getAlbum().getArtista(),
+                        musica.getArtista(),
+                        musica.getAlbum(),
                         musica.getLinkMusica()
                 ))
                 .toList();
     }
+
+
 
     //Busca músicas por titulo
     public List<Musica> buscarMusicaPorTitulo(String tituloMusica) {

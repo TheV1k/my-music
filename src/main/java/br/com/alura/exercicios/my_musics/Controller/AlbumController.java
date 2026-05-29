@@ -24,10 +24,10 @@ public class AlbumController {
     private AlbumService service;
 
     @PostMapping
-    public ResponseEntity <List<ResumoAlbumDTO>> salvar(
+    public ResponseEntity <List<Album>> salvar(
             @RequestBody List<AlbumDTO> dtos, Artista artista){
 
-        List<ResumoAlbumDTO> albums = service.salvar(dtos, artista );
+        List<Album> albums = service.salvar(dtos, artista );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(albums);
 

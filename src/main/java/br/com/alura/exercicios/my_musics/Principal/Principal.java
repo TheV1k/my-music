@@ -85,6 +85,7 @@ public class Principal {
                 break;
             case 7:
                 listarMusicasParteNomeAlbum();
+                break;
 
             case 8:
                 ListarAlbumsDeUmArtista();
@@ -114,7 +115,7 @@ public class Principal {
                 );
         //Busca as músicas do artista pesquisado na api do iTunes
         albumsSalvos.forEach(album -> {
-            List<Musica> musicas =  musicaService.processarMusicas(album.getIdItunes(), album);
+            List<Musica> musicas =  musicaService.processarMusicas(album.getIdItunes(), album, artista);
           //Converte os dados das músicas para DTO
             List<MusicaDTO> musicaDTO = musicaService.converterParaDTO(musicas);
             musicaService.salvar(musicas);

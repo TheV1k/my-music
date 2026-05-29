@@ -21,10 +21,11 @@ public interface AlbumRepository extends JpaRepository<Album, Long> {
 
     @Query("SELECT new br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO" +
             "(a.nome," +
-            "b.nome," +
+            "b," +
             "a.anoLancamento," +
             "a.preco," +
             "a.capa )" +
-            "FROM Album a JOIN a.artista b")
+            "FROM Album a " +
+            "JOIN a.artista b")
     List<ResumoAlbumDTO> listarResumoAlbum();
 }

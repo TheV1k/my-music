@@ -28,13 +28,17 @@ public class MusicaController {
     @PostMapping
     public ResponseEntity<List<ResumoMusicaDTO>> salvar(
             @RequestBody List<MusicaDTO> dtos,
-            @RequestParam Album album,
-            @RequestParam Artista artista){
+            Album album,
+            Artista artista){
 
 
-        List<ResumoMusicaDTO> musicasSalvas = service.salvar(dtos, album, artista);
+        List<Musica> musicasSalvas = dtos.stream()
+                .map(dto -> new Musica(dto,album,artista))
+                .toList();
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(musicasSalvas);
+        List<ResumoMusicaDTO> resposta = service.salvar(musicasSalvas);
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
     @GetMapping("/musicas")

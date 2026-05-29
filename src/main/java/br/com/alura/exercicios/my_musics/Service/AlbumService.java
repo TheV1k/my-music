@@ -92,7 +92,7 @@ public class AlbumService extends BaseService {
     @Autowired
     private AlbumRepository repository;
 
-    public List<ResumoAlbumDTO> salvar(List<AlbumDTO> dtos, Artista artista) {
+    public List<Album> salvar(List<AlbumDTO> dtos, Artista artista) {
 
         List<Album> albums = dtos.stream()
                 .map(dto -> new Album(dto, artista))
@@ -100,13 +100,17 @@ public class AlbumService extends BaseService {
 
         repository.saveAll(albums);
 
+        return albums;
+    }
+    public List<ResumoAlbumDTO> converterResumo(List<Album> albums) {
+
         return albums.stream()
-                        .map(a -> new ResumoAlbumDTO(
-                                a.getNome(),
-                                a.getArtista(),
-                                a.getPreco(),
-                                a.getAnoLancamento(),
-                                a.getCapa()))
+                .map(a -> new ResumoAlbumDTO(
+                        a.getNome(),
+                        a.getArtista(),
+                        a.getAnoLancamento(),
+                        a.getPreco(),
+                        a.getCapa()))
                 .toList();
     }
 

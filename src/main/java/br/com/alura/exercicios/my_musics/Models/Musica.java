@@ -75,6 +75,10 @@ public class Musica {
       return album;
    }
 
+   public Artista getArtista() {
+      return artista;
+   }
+
    public void setAlbum(Album album) {
       this.album = album;
    }

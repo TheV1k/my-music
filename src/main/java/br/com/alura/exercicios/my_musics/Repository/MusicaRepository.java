@@ -12,13 +12,13 @@ import java.util.List;
 
 public interface MusicaRepository extends JpaRepository<Musica, Long> {
 
-    @Query("SELECT new br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO" +
+    @Query("SELECT new br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO" +
             "(m.faixa," +
             "m.titulo," +
-            "a.nome," +
-            "al.nome" +
+            "a," +
+            "al," +
             "m.linkMusica)" +
-            "FROM Musicas m " +
+            "FROM Musica m " +
             "JOIN m.artista a " +
             "JOIN m.album al")
     List<ResumoMusicaDTO> listarResumoMusica();
