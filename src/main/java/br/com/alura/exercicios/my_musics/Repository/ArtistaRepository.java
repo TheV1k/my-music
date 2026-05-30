@@ -1,7 +1,7 @@
 package br.com.alura.exercicios.my_musics.Repository;
 
+import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO;
-import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,5 +32,5 @@ public interface ArtistaRepository extends JpaRepository <Artista, Long> {
        JOIN a.artista ar
        WHERE UPPER(ar.nome) = UPPER(:pesquisa)
        """)
-    List<Album> listaAlbunsPorArtista(@Param("pesquisa") String pesquisa);
+    List<AlbumDTO> listaAlbunsPorArtista(@Param("pesquisa") String pesquisa);
 }

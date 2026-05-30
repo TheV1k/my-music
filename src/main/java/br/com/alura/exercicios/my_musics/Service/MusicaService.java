@@ -1,17 +1,18 @@
 package br.com.alura.exercicios.my_musics.Service;
 
-import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.MusicaDTO;
-import br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO;
 import br.com.alura.exercicios.my_musics.Models.*;
 import br.com.alura.exercicios.my_musics.Repository.MusicaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 public class MusicaService extends BaseService {
@@ -90,43 +91,57 @@ public class MusicaService extends BaseService {
                 .map(musica -> new ResumoMusicaDTO(
                         musica.getFaixa(),
                         musica.getTitulo(),
-                        musica.getArtista(),
-                        musica.getAlbum(),
+                        musica.getArtista().getNome(),
+                        musica.getAlbum().getNome(),
                         musica.getLinkMusica()
                 ))
                 .toList();
     }
 
-
+    private ResumoMusicaDTO converterParaResumoDTO(Musica musica) {
+        return new ResumoMusicaDTO(
+                musica.getFaixa(),            // Integer
+                musica.getTitulo(),           // String
+                musica.getLinkMusica(),       // String
+                musica.getAlbum().getNome(),  // String (Ajuste se na sua classe Album for outro getter)
+                musica.getArtista().getNome() // String (Ajuste se na sua classe Artista for outro getter)
+        );
+    }
 
     //Busca músicas por titulo
-    public List<Musica> buscarMusicaPorTitulo(String tituloMusica) {
-            List<Musica> musicas = repository.findByTituloEqualsIgnoreCase(tituloMusica)
-                    .stream()
-                    .toList();
+    public Page<ResumoMusicaDTO> buscarMusicaPorTitulo(String tituloMusica, Pageable pageable) {
 
-            if (musicas.isEmpty()){
-                throw new RuntimeException("Nenhuma música encontrada!");
-            }
-            return musicas;
+        Page<Musica> paginasMusicas = repository.findByTituloEqualsIgnoreCase(tituloMusica, pageable);
+
+
+            return paginasMusicas.map(this::converterParaResumoDTO);
 
     }
 
     //Lista as músicas de um album
-    public List<Musica> musicasPorAlbum(String album){
+    public List<MusicaDTO> musicasPorAlbum(String album){
 
-        List<Musica> musicaPorAlbum = repository.findByAlbumNomeEqualsIgnoreCase(album);
-
-        return  musicaPorAlbum;
+      return converterParaDTO(repository.findByAlbumNomeEqualsIgnoreCase(album));
 
     }
 
     //Lista as músicas de um album buscando apenas parte do título
-    public List<Musica> musicasPorAlbumParteTitulo(String album){
+    public List<ResumoMusicaDTO> musicasPorAlbumParteTitulo(String album){
 
         List<Musica> musicaPorAlbum = repository.findByAlbumNomeContainingIgnoreCase(album);
 
-        return  musicaPorAlbum;
+        return  musicaPorAlbum.stream().map(this::converterParaResumoDTO).toList();
 
+
+    }
+
+    public Page<ResumoMusicaDTO> listarMusicasPaginados(Pageable pageable) {
+        return repository.findAll(pageable).map(musica -> new ResumoMusicaDTO(
+                musica.getFaixa(),
+                musica.getTitulo(), 
+                musica.getArtista().getNome(),
+                musica.getAlbum().getNome(),
+                musica.getLinkMusica()
+        ));
     }
 }

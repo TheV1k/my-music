@@ -34,12 +34,7 @@ public class AlbumController {
     }
 
     @GetMapping
-    public List<ResumoAlbumDTO> listar(){
-        return service.listarResumo();
-    }
-
-    @GetMapping("/album")
-    public Page<Album> listar(@RequestParam(defaultValue = "0") int pagina,
+    public Page<ResumoAlbumDTO> listar(@RequestParam(defaultValue = "0") int pagina,
                                 @RequestParam(defaultValue = "5") int tamanho){
 
         Pageable pageable = PageRequest.of(
@@ -47,7 +42,13 @@ public class AlbumController {
                 tamanho,
                 Sort.by("nome").ascending());
 
-        return service.listarAlbumsPaginados(pagina, tamanho);
+        return service.listarAlbumsPaginados(pageable);
+    }
+
+    @GetMapping("/5-mais-caros")
+    public List<ResumoAlbumDTO> obter5MaisCaros(){
+        return service.cincoMaisCaros();
     }
 }
+
 

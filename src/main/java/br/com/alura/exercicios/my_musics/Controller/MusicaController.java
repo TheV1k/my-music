@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,15 +42,40 @@ public class MusicaController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
-    @GetMapping("/musicas")
-    public Page<Musica> listar(@RequestParam(defaultValue = "0") int pagina,
-                              @RequestParam(defaultValue = "5") int tamanho) {
+    @GetMapping
+
+    public Page<ResumoMusicaDTO> listar(@RequestParam(defaultValue = "0") int pagina,
+                                        @RequestParam(defaultValue = "10") int tamanho) {
             Pageable pageable = PageRequest.of(
                     pagina,
                     tamanho,
                     Sort.by("titulo").ascending());
 
-            return service.listarMusicasPaginados(pagina, tamanho);
+            return service.listarMusicasPaginados(pageable);
         }
 
+        //Busca músicas pelo titulo
+    @GetMapping("/titulo/{titulo}")
+    public Page<ResumoMusicaDTO> buscarPorTitulo(@PathVariable String titulo, Pageable pageable){
+
+
+        return service.buscarMusicaPorTitulo(titulo, pageable);
+    }
+
+    //Lista as músicas de um album
+    @GetMapping("/album/{album}")
+    public List<MusicaDTO> buscarMusicasAlbum(@PathVariable String album){
+        return service.musicasPorAlbum(album);
+    }
+
+    //Busca músicas de um album usando apenas parte do nome do album
+    @GetMapping("/album/buscar-por-album")
+    public ResponseEntity<List<ResumoMusicaDTO>> buscarPorNomeParcial(@RequestParam("album")String album){
+
+        List<ResumoMusicaDTO> musicas = service.musicasPorAlbumParteTitulo(album);
+
+        return ResponseEntity.ok(musicas);
+
+    }
 }
+

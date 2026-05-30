@@ -1,6 +1,5 @@
 package br.com.alura.exercicios.my_musics.Repository;
 
-import br.com.alura.exercicios.my_musics.DTO.ResumoAlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO;
 import br.com.alura.exercicios.my_musics.Models.Musica;
 import org.springframework.data.domain.Page;
@@ -12,12 +11,11 @@ import java.util.List;
 
 public interface MusicaRepository extends JpaRepository<Musica, Long> {
 
-    @Query("SELECT new br.com.alura.exercicios.my_musics.DTO.ResumoMusicaDTO" +
-            "(m.faixa," +
+    @Query("SELECT m.faixa," +
             "m.titulo," +
-            "a," +
-            "al," +
-            "m.linkMusica)" +
+            "a.nome," +
+            "al.nome," +
+            "m.linkMusica " +
             "FROM Musica m " +
             "JOIN m.artista a " +
             "JOIN m.album al")
@@ -27,7 +25,7 @@ public interface MusicaRepository extends JpaRepository<Musica, Long> {
 
     //Buscar música pelo nome
 
-    List<Musica> findByTituloEqualsIgnoreCase(String tituloMusica);
+    Page<Musica> findByTituloEqualsIgnoreCase(String tituloMusica, Pageable pageable);
 
     List<Musica> findByAlbumNomeContainingIgnoreCase(String album);
 

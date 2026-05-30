@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,10 +26,15 @@ public class AlbumService extends BaseService {
     }
 
     //Paginação
-    public Page<Album> listarAlbumsPaginados(int pagina, int tamanho) {
-        PageRequest pageable = PageRequest.of(pagina, tamanho);
+    public Page<ResumoAlbumDTO> listarAlbumsPaginados(Pageable pageable) {
 
-        return repository.findAll(pageable);
+        return repository.findAll(pageable).map(album -> new ResumoAlbumDTO(
+                album.getNome(),
+                album.getArtista().getNome(),
+                album.getAnoLancamento(),
+                album.getPreco(),
+                album.getCapa()
+        ));
     }
 
     //Faz a requisição e retorna lista de álbuns do artista pesquisado
@@ -107,16 +113,18 @@ public class AlbumService extends BaseService {
         return albums.stream()
                 .map(a -> new ResumoAlbumDTO(
                         a.getNome(),
-                        a.getArtista(),
+                        a.getArtista().getNome(),
                         a.getAnoLancamento(),
                         a.getPreco(),
                         a.getCapa()))
                 .toList();
     }
 
-    public List<Album> cincoMaisCaros() {
+    public List<ResumoAlbumDTO> cincoMaisCaros() {
 
-        return repository.cincoAlbumsMaisCaros();
+        Pageable pageable = PageRequest.of(0, 5);
+
+        return repository.cincoAlbumsMaisCaros(pageable);
     }
 
     public List<ResumoAlbumDTO> listarResumo() {

@@ -2,6 +2,7 @@ package br.com.alura.exercicios.my_musics.Controller;
 
 import br.com.alura.exercicios.my_musics.DTO.ArtistaDTO;
 import br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO;
+import br.com.alura.exercicios.my_musics.Exception.BusinessException;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Service.ArtistaService;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,7 @@ public class ArtistaController {
 
     @PostMapping
     public ResponseEntity<ResumoArtistaDTO> salvar(@RequestBody ArtistaDTO dto){
+
 
              ResumoArtistaDTO artista = service.salvar(dto);
 

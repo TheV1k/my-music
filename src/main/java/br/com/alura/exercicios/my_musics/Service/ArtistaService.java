@@ -1,7 +1,9 @@
 package br.com.alura.exercicios.my_musics.Service;
 
+import br.com.alura.exercicios.my_musics.DTO.AlbumDTO;
 import br.com.alura.exercicios.my_musics.DTO.ArtistaDTO;
 import br.com.alura.exercicios.my_musics.DTO.ResumoArtistaDTO;
+import br.com.alura.exercicios.my_musics.Exception.ResourceNotFoundException;
 import br.com.alura.exercicios.my_musics.Models.Album;
 import br.com.alura.exercicios.my_musics.Models.Artista;
 import br.com.alura.exercicios.my_musics.Models.DadosArtista;
@@ -59,7 +61,7 @@ public class ArtistaService extends BaseService {
                 .stream()
                 .filter(a -> a.nome().equalsIgnoreCase(nomeArtista))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Artista não encontrado"));
     }
 
 
@@ -84,9 +86,9 @@ public class ArtistaService extends BaseService {
 
 
     }
-    public List<Album> listarAlbumsDoArtista(String pesquisa){
+    public List<AlbumDTO> listarAlbumsDoArtista(String pesquisa){
 
-        List<Album> albumsDoArtista = repository.listaAlbunsPorArtista(pesquisa);
+        List<AlbumDTO> albumsDoArtista = repository.listaAlbunsPorArtista(pesquisa);
         return albumsDoArtista;
 
     }
