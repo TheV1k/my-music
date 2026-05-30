@@ -1,59 +1,175 @@
-# **🎵 My Music**
+# 🎵 My Music
 
-O My Music é uma aplicação backend desenvolvida em Java com Spring Boot que permite buscar informações de artistas, álbuns e músicas utilizando a API do iTunes.
+Aplicação backend desenvolvida com Java e Spring Boot para consulta e gerenciamento de informações musicais utilizando a API do iTunes.
 
-O objetivo do projeto é praticar consumo de APIs REST, tratamento de dados e evolução de uma aplicação backend com persistência de dados.
+O projeto foi criado com foco em aprendizado prático de desenvolvimento backend, explorando integração com APIs externas, persistência de dados e construção de uma API REST seguindo boas práticas de arquitetura em camadas.
 
-## **🚀 Funcionalidades atuais**
+---
 
-Busca de artistas via API do iTunes
-Listagem de álbuns do artista
-Listagem de músicas associadas
+## 🚀 Funcionalidades
 
-Persistência de dados no banco PostgreSQL
+### Integração com API Externa
 
-Consultas estruturadas utilizando Derived Queries, consulta nativa e JPQL
+* Busca de artistas através da API do iTunes
+* Consulta de álbuns relacionados ao artista
+* Consulta de músicas pertencentes aos álbuns encontrados
 
-## 🛠️ Tecnologias utilizadas
+### Persistência de Dados
 
-Java 17+
-Spring Boot
-Maven
-API REST (iTunes Search API)
-Jackson (parse de JSON)
+* Armazenamento de artistas, álbuns e músicas em banco PostgreSQL
+* Relacionamentos entre entidades utilizando JPA/Hibernate
 
-## 🧠 Objetivo do projeto
+### Consultas Avançadas
 
-Este projeto tem fins educacionais, com foco em:
+* Derived Queries
+* Consultas JPQL
+* Consultas SQL Nativas
+* Paginação com Pageable
 
-Consumo de APIs externas
-Manipulação e transformação de dados JSON
-Organização de código em camadas
-Evolução de aplicação backend realista
+### Tratamento de Erros
 
-📌 Próximos passos
+* Exception Handler Global
+* Respostas padronizadas para erros da API
 
-Cache de buscas para otimização
-API REST completa para consumo externo
+---
 
-Criação de interface gráfica
+## 🏗️ Arquitetura
 
-## ▶️ Como executar
+O projeto segue a arquitetura em camadas:
 
- Clone o repositório:
+```text
+Controller
+   ↓
+Service
+   ↓
+Repository
+   ↓
+PostgreSQL
+```
 
-`git clone https://github.com/seu-usuario/my-music.git`
+Estrutura principal:
 
-Acesse a pasta:
+```text
+src/main/java
+├── controller
+├── service
+├── repository
+├── model
+├── dto
+├── exception
+└── config
+```
 
-`cd my-music
-`
+---
 
-## Execute com Maven
+## 🛠️ Tecnologias Utilizadas
 
-`./mvnw spring-boot:run
-`
+* Java 17
+* Spring Boot
+* Spring Data JPA
+* Hibernate
+* PostgreSQL
+* Maven
+* Jackson
+* REST API
+* iTunes Search API
 
-## 📚 **Aprendizados**
+---
 
-Este projeto evolui gradualmente de uma aplicação console para uma API robusta, simulando um sistema real de catálogo musical.
+## 📡 Exemplos de Endpoints
+
+### Buscar artistas
+
+```http
+GET /artistas
+```
+
+### Buscar artista por ID
+
+```http
+GET /artistas/{id}
+```
+
+### Listar álbuns
+
+```http
+GET /albuns
+```
+
+### Listar músicas
+
+```http
+GET /musicas
+```
+
+---
+
+## ⚙️ Configuração do Ambiente
+
+### Clonar o repositório
+
+```bash
+git clone https://github.com/TheV1k/my-music.git
+```
+
+### Entrar na pasta do projeto
+
+```bash
+cd my-music
+```
+
+### Configurar banco PostgreSQL
+
+No arquivo `application.properties` configure:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/mymusic
+spring.datasource.username=postgres
+spring.datasource.password=senha
+```
+
+### Executar aplicação
+
+```bash
+./mvnw spring-boot:run
+```
+
+ou
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+## 📚 Aprendizados
+
+Durante o desenvolvimento deste projeto foram praticados conceitos como:
+
+* Consumo de APIs REST
+* Serialização e desserialização JSON
+* Spring Data JPA
+* Relacionamentos entre entidades
+* DTOs
+* Paginação
+* Tratamento global de exceções
+* Arquitetura em camadas
+* PostgreSQL
+* Consultas JPQL e SQL Nativas
+
+---
+
+## 🎯 Próximos Passos
+
+* Implementar cache de consultas
+* Documentação com Swagger/OpenAPI
+* Testes unitários com JUnit e Mockito
+* Autenticação com Spring Security e JWT
+* API REST completa para consumo externo
+* Interface Web para consulta dos dados
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por Victor Moreira como projeto de estudos em Java e Spring Boot.
