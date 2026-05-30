@@ -84,12 +84,6 @@ src/main/java
 GET /artistas
 ```
 
-### Buscar artista por ID
-
-```http
-GET /artistas/{id}
-```
-
 ### Listar álbuns
 
 ```http
